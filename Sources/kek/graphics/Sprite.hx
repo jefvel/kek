@@ -42,10 +42,17 @@ class Sprite {
 		var tx = x - G.camera.ox;
 		var ty = y - G.camera.oy;
 		
+        /*
 		b.drawScaledSubImage(graphics,  0, 0, width, height,
-		Std.int((tx - scale * width * anchorX) / scale) * scale, 
-		Std.int((ty - scale * height * anchorY) / scale) * scale, 
-		width * scale, 
-		height * scale);
+            Std.int((tx - scale * width * anchorX) / scale) * scale, 
+            Std.int((ty - scale * height * anchorY) / scale) * scale, 
+            width * scale, 
+            height * scale);
+       */
+       b.drawScaledSubImage(graphics,  0, 0, width, height,
+            tx - scale * width * anchorX, 
+            ty - scale * height * anchorY, 
+            width * scale, 
+            height * scale);
     }
 }

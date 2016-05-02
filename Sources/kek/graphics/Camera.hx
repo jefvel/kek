@@ -18,8 +18,10 @@ class Camera {
 	public function moveTowards(x:Float, y:Float) {
 		var dx = x - kha.System.windowWidth() * 0.5;
 		var dy = y - kha.System.windowHeight() * 0.5;
+		
 		dx -= ox;
 		dy -= oy;
+		
 		dx *= 0.1;
 		dy *= 0.1;
 		
