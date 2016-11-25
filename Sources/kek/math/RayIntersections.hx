@@ -22,10 +22,10 @@ class RayIntersections {
 										origin:kha.math.Vector3,
 										dir:kha.math.Vector3,
 										out:kha.math.Vector3):Bool {
-		MathUtils.sub3(e1, v2, v1);
-		MathUtils.sub3(e2, v3, v1);
+		Vector3Utils.sub3(e1, v2, v1);
+		Vector3Utils.sub3(e2, v3, v1);
 		
-		MathUtils.cross3(P, dir, e2);
+		Vector3Utils.cross3(P, dir, e2);
 		
 		det = e1.dot(P);
 		
@@ -35,7 +35,7 @@ class RayIntersections {
 		
 		inv_det = 1.0 / det;
 		
-		MathUtils.sub3(T, origin, v1);
+		Vector3Utils.sub3(T, origin, v1);
 		
 		u = T.dot(P) * inv_det;
 
@@ -43,7 +43,7 @@ class RayIntersections {
 			return false;
 		}
 		
-		MathUtils.cross3(Q, T, e1);
+		Vector3Utils.cross3(Q, T, e1);
 
 		v = dir.dot(Q) * inv_det;
 

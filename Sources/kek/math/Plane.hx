@@ -1,6 +1,5 @@
 package kek.math;
 import kha.math.Vector3;
-import kha.math.Vector3;
 
 class Plane {
 	public var d:Float;
@@ -19,9 +18,9 @@ class Plane {
 	private static var aux2:Vector3 = new Vector3();
 	public function set3Points(a:Vector3, b:Vector3, c:Vector3) {
 	
-		kek.math.MathUtils.sub3(aux1, a, b);
-		kek.math.MathUtils.sub3(aux2, c, b);
-		kek.math.MathUtils.cross3(normal, aux2, aux1);
+		kek.math.Vector3Utils.sub3(aux1, a, b);
+		kek.math.Vector3Utils.sub3(aux2, c, b);
+		kek.math.Vector3Utils.cross3(normal, aux2, aux1);
 		
 		normal.normalize();
 		point.x = b.x;
