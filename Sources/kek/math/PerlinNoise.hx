@@ -101,11 +101,10 @@ class PerlinNoise {
     var aOctFreq = aOctFreq;
     var aOctPers = aOctPers;
 
-      _x = baseX;
-        var s = 0.;
+    _x = baseX;
+    var s = 0.;
 
-        for ( i in 0...octaves )
-        {
+        for (i in 0...octaves) {
           var fFreq = aOctFreq[i];
           var fPers = aOctPers[i];
 
