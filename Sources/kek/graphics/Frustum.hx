@@ -44,8 +44,6 @@ class Frustum {
 	
 	var planes:Array<kek.math.Plane>;
 	
-	inline static var ANG2RAD = (3.14159265358979323846 / 180.0);
-
 	public function new() {
 		planes = new Array<kek.math.Plane>();
 		for(p in 0...6) {
@@ -68,11 +66,13 @@ class Frustum {
 	
 	public function setCamInternals(fov:Float, ratio:Float, nearD:Float, farD:Float) {
 		this.fov = fov;
+		
 		this.ratio = ratio;
 		this.nearD = nearD;
 		this.farD = farD;
 
-		this.tang = Math.tan(ANG2RAD * fov * 0.5);
+		this.tang = Math.tan(fov * 0.5);
+		
 		this.nh = nearD * tang;
 		this.nw = nh * ratio;
 		this.fh = farD * tang;
