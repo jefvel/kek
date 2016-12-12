@@ -14,7 +14,8 @@ typedef Animation = {
 	name:String,
 	from:Int,
 	to:Int,
-	totalLength:Int
+	totalLength:Int,
+	looping:Bool
 }
 
 typedef AseFrame = {
@@ -42,11 +43,14 @@ class TileSheet {
 	public var tilesX:Float;
 	public var tilesY:Float;
 	
-	private var image:kha.Image;
+	public var image:kha.Image;
 	public var frames:Array<Frame>;
 	private var animations:Map<String, Animation>;
 	
+	var defaultAnimation:Animation;
+	
 	public function new(image:kha.Image, ?sheetData:kha.Blob) {
+		this.image = image;
 		this.frames = new Array<Frame>();
 		this.animations = new Map<String, Animation>();
 
@@ -55,7 +59,11 @@ class TileSheet {
 		}
 	}
 	
-	public function getAnimation(animation:String) {
+	public inline function getAnimation(animation:String) {
+		if(animations[animation] == null) {
+			return defaultAnimation;
+		}
+		
 		return animations[animation];
 	}
 
@@ -79,10 +87,25 @@ class TileSheet {
 			var frameCount = s.to - s.from;
 			s.totalLength = 0;
 			
+			s.looping = true;
+			
 			for(i in 0...frameCount + 1) {
 				s.totalLength += this.frames[i + s.from].duration;
 			}
 		}
+		
+		var totalLength = 0;
+		for(f in frames) {
+			totalLength += f.duration;
+		}
+		
+		defaultAnimation = {
+			from: 0,
+			to: frames.length - 1,
+			name: "[default]",
+			looping: true,
+			totalLength: totalLength
+		};
 	}
 	
 	public function getFrame(i:Int): Frame{
@@ -106,7 +129,8 @@ class TileSheet {
 			name: name,
 			from: from,
 			to: to,
-			totalLength: 0
+			totalLength: 0,
+			looping: true
 		};
 	}
 }
