@@ -15,7 +15,9 @@ typedef Animation = {
 	from:Int,
 	to:Int,
 	totalLength:Int,
-	looping:Bool
+	looping:Bool,
+	linearSpeed:Bool,
+	frameDuration:Int
 }
 
 typedef AseFrame = {
@@ -84,18 +86,32 @@ class TileSheet {
 
 		for(s in data.meta.frameTags){
 			this.animations[s.name] = s;
+			
 			var frameCount = s.to - s.from;
 			s.totalLength = 0;
 			
 			s.looping = true;
+			var l:Int = null;
+			
+			s.linearSpeed = true;
 			
 			for(i in 0...frameCount + 1) {
+				if(l == null) {
+					l = this.frames[i + s.from].duration;
+					s.frameDuration = l;
+				} else if(l != this.frames[i + s.from].duration) {
+					s.linearSpeed = false;
+					s.frameDuration = -1;
+				}
+				
 				s.totalLength += this.frames[i + s.from].duration;
 			}
 		}
 		
 		var totalLength = 0;
+		var l = 0;
 		for(f in frames) {
+			l = f.duration;
 			totalLength += f.duration;
 		}
 		
@@ -104,7 +120,9 @@ class TileSheet {
 			to: frames.length - 1,
 			name: "[default]",
 			looping: true,
-			totalLength: totalLength
+			totalLength: totalLength,
+			linearSpeed: true,
+			frameDuration: l
 		};
 	}
 	
@@ -122,15 +140,5 @@ class TileSheet {
 			uvy:0.0,
 			duration: 100
 		});
-	}
-
-	public function addAnimation(name:String, from:Int, to:Int) {
-		animations[name] = {
-			name: name,
-			from: from,
-			to: to,
-			totalLength: 0,
-			looping: true
-		};
 	}
 }
