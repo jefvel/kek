@@ -9,11 +9,34 @@ uniform float time;
 uniform sampler2D buff;
 
 uniform vec2 screenSize;
+uniform vec2 textureSize;
 
 void main() {
-    vec2 uv = gl_FragCoord.xy / screenSize.xy;
+    vec2 uv = gl_FragCoord.xy / (textureSize.xy);
+    vec4 color = texture2D(buff, uv);
 
-    vec4 color =  texture2D(buff, uv);
+/*
+	float amount = 0.0;
+	
+	amount = (1.0 + sin(time*6.0)) * 0.5;
+	amount *= 1.0 + sin(time*16.0) * 0.5;
+	amount *= 1.0 + sin(time*19.0) * 0.5;
+	amount *= 1.0 + sin(time*27.0) * 0.5;
+	amount = pow(amount, 3.0);
+
+	amount *= 0.001;
+	
+    vec4 col;
+    col.r = texture2D( buff, vec2(uv.x+amount,uv.y) ).r;
+    col.g = texture2D( buff, uv ).g;
+    col.b = texture2D( buff, vec2(uv.x-amount,uv.y) ).b;
+
+	col *= (1.0 - amount * 0.5);
+	
+    color.rgb = col.rgb;
+    
+    */
+
     float depth = color.a;
     
     vec2 d = uv;
@@ -29,15 +52,6 @@ void main() {
     
     color = mix(color, aberrationColor, vig);
     
-    /*
-    float t = mod(time, 1.0);
-    color.rgb -= vec3(
-        sin(t + (gl_FragCoord.x * 100.0) + 100.0) * 
-        cos(t + (gl_FragCoord.y * 10.0) + 100.0)) * 0.1;
-    */
-    //color.rgb = vec3(depth / 2.0);
-    
-    //color *= max(0.6, mod(gl_FragCoord.x, 1.0) * mod(gl_FragCoord.y, 1.0));
     float sky = 1.0 - color.a;
     color.a = 1.0;
     vec3 skyColor = mix(vec3(201,233,246), vec3(80,200,198), pow(uv.y, 2.1));

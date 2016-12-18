@@ -19,6 +19,8 @@ class PostprocessingBuffer {
     
     var texture:kha.Image;
     public var graphics(get, null):kha.graphics4.Graphics;
+    public var width:Int;
+    public var height:Int;
     
     var pipeline:PipelineState;
     var structure:VertexStructure;
@@ -26,6 +28,7 @@ class PostprocessingBuffer {
     var texUnit:TextureUnit;
     
     var screenSizeLocation:ConstantLocation;
+    var textureSizeLocation:ConstantLocation;
     var timeLocation:ConstantLocation;
     
     var vBuf:VertexBuffer;
@@ -43,6 +46,8 @@ class PostprocessingBuffer {
     ];
     
     var startTime:Float;
+    
+    public var pixelSize:Int = 2;
     
     public function new() {            
         startTime = kha.Scheduler.realTime();
@@ -71,13 +76,12 @@ class PostprocessingBuffer {
         
         texUnit = pipeline.getTextureUnit("buff");
         screenSizeLocation = pipeline.getConstantLocation("screenSize");
+        textureSizeLocation = pipeline.getConstantLocation("textureSize");
         timeLocation = pipeline.getConstantLocation("time");
     }
     
     public function clear(?color:kha.Color, ?depth:Float, ?stencil:Int) {
-		texture.g4.begin();
 		texture.g4.clear(color, depth, stencil);
-		texture.g4.end();
     }
     
     public function get_graphics():kha.graphics4.Graphics {
@@ -88,6 +92,8 @@ class PostprocessingBuffer {
     var lastHeight = 0;
     
     function nearestPowerOfTwo(i:Int) {
+        //return i;
+        
         var r = 1;
         while(r < i) {
             r *= 2;
@@ -105,24 +111,33 @@ class PostprocessingBuffer {
                 texture.unload();
             }
             
+            this.width = Std.int(f.width / pixelSize);
+            this.height = Std.int(f.height / pixelSize);
+            
             texture = kha.Image.createRenderTarget(
-                //f.width, f.height,
-                nearestPowerOfTwo(f.width >> 2), 
-                nearestPowerOfTwo(f.height >> 2),
+                nearestPowerOfTwo(width), nearestPowerOfTwo(height),
                 TextureFormat.RGBA32, 
                 kha.graphics4.DepthStencilFormat.DepthOnly, 0);
         }
+        
+        this.graphics.begin();
+        this.graphics.viewport(0, texture.height - height, width, height);
     }
     
     public function end(f:kha.Framebuffer) {
         var g4 = f.g4;
+        g4.end();
+        
         g4.setPipeline(pipeline);
-        
         g4.setFloat(timeLocation, kha.Scheduler.realTime() - startTime);
-        
         g4.begin();
+        
         var kanvas = kha.ScreenCanvas.the;
+        g4.viewport(0, 0, kanvas.width, kanvas.height);
+        
         g4.setFloat2(screenSizeLocation, kanvas.width, kanvas.height);
+        g4.setFloat2(textureSizeLocation, texture.width * pixelSize, texture.height * pixelSize);
+        
         g4.setTexture(texUnit, texture);
         
         g4.setTextureParameters(texUnit, 
