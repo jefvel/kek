@@ -12,8 +12,11 @@ uniform vec2 screenSize;
 uniform vec2 textureSize;
 
 void main() {
+    vec2 screenCoord = gl_FragCoord.xy / screenSize;
+    
     vec2 uv = gl_FragCoord.xy / (textureSize.xy);
     vec4 color = texture2D(buff, uv);
+    
 
 /*
 	float amount = 0.0;
@@ -39,7 +42,7 @@ void main() {
 
     float depth = color.a;
     
-    vec2 d = uv;
+    vec2 d = screenCoord;
     d *= 1.0 - d;
     float vig = d.x * d.y * 15.0;
     vig = pow(abs(vig), 0.20);
