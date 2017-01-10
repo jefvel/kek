@@ -61,7 +61,7 @@ class TileSheet {
 		}
 	}
 	
-	public inline function getAnimation(animation:String) {
+	public inline function getAnimation(?animation:String) {
 		if(animations[animation] == null) {
 			return defaultAnimation;
 		}

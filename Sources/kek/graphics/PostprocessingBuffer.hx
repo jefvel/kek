@@ -85,11 +85,11 @@ class PostprocessingBuffer {
 		texture.g4.clear(color, depth, stencil);
     }
     
-    public function get_graphics():kha.graphics4.Graphics {
+    function get_graphics():kha.graphics4.Graphics {
         return texture.g4;
     }
     
-    public function get_g2():kha.graphics2.Graphics {
+    function get_g2():kha.graphics2.Graphics {
         return texture.g2;
     }
     
