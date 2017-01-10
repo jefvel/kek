@@ -91,12 +91,12 @@ class TileSheet {
 			s.totalLength = 0;
 			
 			s.looping = true;
-			var l:Int = null;
+			var l:Int = -1;
 			
 			s.linearSpeed = true;
 			
 			for(i in 0...frameCount + 1) {
-				if(l == null) {
+				if(l == -1) {
 					l = this.frames[i + s.from].duration;
 					s.frameDuration = l;
 				} else if(l != this.frames[i + s.from].duration) {

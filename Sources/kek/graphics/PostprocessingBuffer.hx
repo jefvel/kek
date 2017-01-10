@@ -19,6 +19,7 @@ class PostprocessingBuffer {
     
     var texture:kha.Image;
     public var graphics(get, null):kha.graphics4.Graphics;
+    public var g2(get, null):kha.graphics2.Graphics;
     public var width:Int;
     public var height:Int;
     
@@ -86,6 +87,10 @@ class PostprocessingBuffer {
     
     public function get_graphics():kha.graphics4.Graphics {
         return texture.g4;
+    }
+    
+    public function get_g2():kha.graphics2.Graphics {
+        return texture.g2;
     }
     
     var lastWidth = 0;

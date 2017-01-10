@@ -57,7 +57,7 @@ void main() {
     
     float sky = 1.0 - color.a;
     color.a = 1.0;
-    vec3 skyColor = mix(vec3(201,233,246), vec3(80,200,198), pow(uv.y, 2.1));
+    vec3 skyColor = mix(vec3(201,233,246), vec3(80,200,198), pow(abs(uv.y), 2.1));
     skyColor /= 255.0;
     
     color = mix(color, aberrationColor, vig);
